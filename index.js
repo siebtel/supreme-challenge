@@ -81,7 +81,7 @@ function get_groups() {
 	return 0;
 }
 
-function get_visibility(visibility){
+function get_boolean(visibility){
 	var result;
 	if (visibility == true || visibility == 'yes' || visibility == '1' || visibility == 1){
 		result = true;
@@ -97,8 +97,8 @@ for (let i = 0; i < list_of_input.length; i++) {
 	var eid = list_of_input[i]['eid'];
 	var addresses = get_addresses(list_of_input[i]);
 	var groups = get_groups();
-	var visibility = get_visibility(list_of_input[i]['invisible']);
-	var access_level = list_of_input[i]['see_all'];
+	var visibility = get_boolean(list_of_input[i]['invisible']);
+	var access_level = get_boolean(list_of_input[i]['see_all']);
 	var user = new User(fullname,
 		eid,
 		groups,
