@@ -1,6 +1,7 @@
 //imports
 const Papa = require('papaparse');
 const fs = require('fs');
+const ld = require('lodash');
 
 //variables
 var list_of_users = []
@@ -61,20 +62,24 @@ for (let i = 0; i < list_of_input.length - 1; i++) {
 }
 
 
-function get_addresses(list_of_input){
-	for (const property in list_of_input){
-		var address = property.split(' ');
-		if ( address.length > 1 && (address[0] == 'email' || address[0] == 'phone')){
-			
+function get_addresses(input){
+	var addresses = [];
+	for (const property in input){
+		var possible_address = property.split(' ');
+		if ( possible_address.length > 1 && (possible_address[0] == 'email' || possible_address[0] == 'phone')){
+			var address = { "type" : possible_address[0],
+							"tags" : possible_address.slice(1),
+							"address" : input[property]};
+							addresses.push(address);
 		}
 	}
-	return 0;
+	return addresses;
 }
 
 function get_groups() {
 	return 0;
 }
-
+console.log(list_of_input);
 for (let i = 0; i < list_of_input.length; i++) {
 	var fullname = list_of_input[i]['fullname'];
 	var eid = list_of_input[i]['eid'];
@@ -84,9 +89,10 @@ for (let i = 0; i < list_of_input.length; i++) {
 	var access_level = list_of_input[i]['access_level'];
 	var user = new User(fullname,
 		eid,
-		addresses,
 		groups,
+		addresses,
 		visibility,
 		access_level);
 	list_of_users.push(user);
 }
+console.log(JSON.stringify(list_of_users, null, ' '));
