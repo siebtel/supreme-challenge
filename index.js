@@ -35,6 +35,12 @@ var csv = fs.readFileSync('input.csv', 'utf8');
 var json = Papa.parse(csv, config);
 list_of_input = json['data'];
 
+//write in 
+function write_to_json(){
+	fs.writeFile('output.json', JSON.stringify(list_of_users, null, ' '), 'utf8', function(err){
+		if(err) throw err;
+	});
+}
 //merge_eid
 function customizer(objValue, srcValue) {
 	let list = [];
@@ -101,7 +107,7 @@ function get_boolean(visibility){
 	return result;
 }
 
-console.log(list_of_input);
+
 for (let i = 0; i < list_of_input.length; i++) {
 	var fullname = list_of_input[i]['fullname'];
 	var eid = list_of_input[i]['eid'];
@@ -117,4 +123,5 @@ for (let i = 0; i < list_of_input.length; i++) {
 		access_level);
 	list_of_users.push(user);
 }
-console.log(JSON.stringify(list_of_users, null, ' '));
+
+write_to_json();
