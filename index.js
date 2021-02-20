@@ -77,8 +77,18 @@ function get_addresses(input){
 	return addresses;
 }
 
-function get_groups() {
-	return 0;
+function get_groups(input) {
+	var groups = [];
+	const re = /[/\|?:;_\-,\$] ?/
+	for (const property in input){
+		var possible_group = property.split(' ');
+		if ( possible_group[0] == "group"){
+			var temp_groups = input[property] + '';
+			temp_groups = temp_groups.split(re);
+			groups.push(temp_groups);
+		}
+	}
+	return [...new Set(groups.flat())];
 }
 
 function get_boolean(visibility){
@@ -96,7 +106,7 @@ for (let i = 0; i < list_of_input.length; i++) {
 	var fullname = list_of_input[i]['fullname'];
 	var eid = list_of_input[i]['eid'];
 	var addresses = get_addresses(list_of_input[i]);
-	var groups = get_groups();
+	var groups = get_groups(list_of_input[i]);
 	var visibility = get_boolean(list_of_input[i]['invisible']);
 	var access_level = get_boolean(list_of_input[i]['see_all']);
 	var user = new User(fullname,
