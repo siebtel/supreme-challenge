@@ -74,10 +74,14 @@ function get_addresses(input){
 	for (const property in input){
 		var possible_address = property.split(' ');
 		if ( possible_address.length > 1 && (possible_address[0] == 'email' || possible_address[0] == 'phone')){
+			if(input[property] == ""){
+				continue;
+			}else{
 			var address = { "type" : possible_address[0],
 							"tags" : possible_address.slice(1),
 							"address" : input[property]};
 							addresses.push(address);
+			}
 		}
 	}
 	return addresses;
