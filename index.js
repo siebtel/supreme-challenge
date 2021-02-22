@@ -68,20 +68,42 @@ for (let i = 0; i < list_of_input.length - 1; i++) {
 	}
 }
 
+function objetify_address(type, tag, address_value){
+	return { "type" : type,
+	"tags" : tag,
+	"address" : address_value};
+}
 
 function get_addresses(input){
 	var addresses = [];
+	var address;
+	const re = /[/\|?:;\,\+$() ]/
+	const is_email = /@/
 	for (const property in input){
 		var possible_address = property.split(' ');
-		if ( possible_address.length > 1 && (possible_address[0] == 'email' || possible_address[0] == 'phone')){
+		if ( possible_address.length > 1 &&  possible_address[0] == 'email'){
 			if(input[property] == ""){
 				continue;
-			}else{
-			var address = { "type" : possible_address[0],
-							"tags" : possible_address.slice(1),
-							"address" : input[property]};
-							addresses.push(address);
+			}else if (typeof input[property] == 'string'){
+				address = objetify_address(possible_address[0], possible_address.slice(1), input[property]);
+				addresses.push(address);
+			}else if (typeof input[property] == 'object'){
+				var temp_address_list = input[property];
+				var address_list = [];
+				for(const element in temp_address_list) {
+					address_list.push(temp_address_list[element].split(re));
+				};
+				address_list = [...new Set(address_list.flat())];
+				console.log(address_list);
+				for (const element in address_list){
+					if (is_email.test(address_list[element])){
+						address = objetify_address(possible_address[0], possible_address.slice(1), address_list[element]);
+						addresses.push(address);
+					}
+				}
 			}
+		}else if(possible_address.length > 1 && possible_address[0] == 'phone'){
+
 		}
 	}
 	return addresses;
