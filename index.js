@@ -33,13 +33,13 @@ const config = {
 		}
 	}
 };
-var csv = fs.readFileSync('input.csv', 'utf8');
+var csv = fs.readFileSync('input1.csv', 'utf8');
 var json = Papa.parse(csv, config);
 list_of_input = json['data'];
 
 //write in 
 function write_to_json(){
-	fs.writeFile('output.json', JSON.stringify(list_of_users, null, ' '), 'utf8', function(err){
+	fs.writeFile('output1.json', JSON.stringify(list_of_users, null, ' '), 'utf8', function(err){
 		if(err) throw err;
 	});
 }
@@ -86,7 +86,7 @@ function get_addresses(input){
 		if ( possible_address.length > 1 &&  possible_address[0] == 'email'){
 			if(input[property] == ""){
 				continue;
-			}else if (typeof input[property] == 'string'){
+			}else if (typeof input[property] == 'string' && is_email.test(input[property])){
 				address = objetify_address(possible_address[0], possible_address.slice(1), input[property]);
 				addresses.push(address);
 			}else if (typeof input[property] == 'object'){
@@ -105,11 +105,15 @@ function get_addresses(input){
 			}
 		}else if(possible_address.length > 1 && possible_address[0] == 'phone'){
 			if(typeof input[property] == 'string' && input[property] != ""){
-				if(phoneUtil.isPossibleNumber(phoneUtil.parse(input[property], 'BR'))){
-					const number_temp = phoneUtil.parseAndKeepRawInput(input[property], 'BR');
-					var number = number_temp.getCountryCode() +""+ number_temp.getNationalNumber();
-					address = objetify_address(possible_address[0], possible_address.slice(1), number);
-					addresses.push(address);
+				try {
+					if(phoneUtil.isPossibleNumber(phoneUtil.parse(input[property], 'BR'))){
+						const number_temp = phoneUtil.parseAndKeepRawInput(input[property], 'BR');
+						var number = number_temp.getCountryCode() +""+ number_temp.getNationalNumber();
+						address = objetify_address(possible_address[0], possible_address.slice(1), number);
+						addresses.push(address);
+					}					
+				} catch (error) {
+					continue;
 				}
 			}else if(typeof input[property] == 'object'){
 				var phone_list = input[property];
