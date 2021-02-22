@@ -137,7 +137,7 @@ function get_groups(input) {
 	const re = /[/\|?:;_\-,\$] ?/
 	for (const property in input){
 		var possible_group = property.split(' ');
-		if ( possible_group[0] == "group"){
+		if ( possible_group[0] == "group" && input[property] != ""){
 			var temp_groups = input[property] + '';
 			temp_groups = temp_groups.split(re);
 			groups.push(temp_groups);
