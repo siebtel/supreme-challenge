@@ -8,7 +8,7 @@ const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance()
 
 //variables
 var list_of_users = []
-let list_of_input = [];
+var list_of_input = [];
 
 class User {
 	constructor(fullname, eid, groups, addresses, visibility, access_level){
@@ -22,24 +22,26 @@ class User {
 }
 
 //open csv and load
-const config = {
-	delimiter: ",",
-	header: true,
-	transformHeader:function(h, i) {
-		if (h == "group"){
-			return String(h + " " + i);
-		}else{
-			return h;
+function open_csv(name_of_file){
+	const config = {
+		delimiter: ",",
+		header: true,
+		transformHeader:function(h, i) {
+			if (h == "group"){
+				return String(h + " " + i);
+			}else{
+				return h;
+			}
 		}
-	}
-};
-var csv = fs.readFileSync('input1.csv', 'utf8');
-var json = Papa.parse(csv, config);
-list_of_input = json['data'];
+	};
+	var csv = fs.readFileSync(name_of_file, 'utf8');
+	var json = Papa.parse(csv, config);
+	list_of_input = json['data'];
+}
 
 //write in 
-function write_to_json(){
-	fs.writeFile('output1.json', JSON.stringify(list_of_users, null, ' '), 'utf8', function(err){
+function write_to_json(name_of_file){
+	fs.writeFile(name_of_file, JSON.stringify(list_of_users, null, ' '), 'utf8', function(err){
 		if(err) throw err;
 	});
 }
@@ -57,15 +59,16 @@ function customizer(objValue, srcValue) {
 		return [...new Set(list)];
 	}
 }
-
-for (let i = 0; i < list_of_input.length - 1; i++) {
-	let j = i+1;
-	while (j < list_of_input.length) {
-		if (list_of_input[i]['eid'] == list_of_input[j]['eid']){
-			ld.mergeWith(list_of_input[i], list_of_input[j], customizer);
-			list_of_input.splice(j,1);
-		}else{
-			j++;
+function merge_eid(){
+	for (let i = 0; i < list_of_input.length - 1; i++) {
+		let j = i+1;
+		while (j < list_of_input.length) {
+			if (list_of_input[i]['eid'] == list_of_input[j]['eid']){
+				ld.mergeWith(list_of_input[i], list_of_input[j], customizer);
+				list_of_input.splice(j,1);
+			}else{
+				j++;
+			}
 		}
 	}
 }
@@ -160,21 +163,33 @@ function get_boolean(visibility){
 	return result;
 }
 
-
-for (let i = 0; i < list_of_input.length; i++) {
-	var fullname = list_of_input[i]['fullname'];
-	var eid = list_of_input[i]['eid'];
-	var addresses = get_addresses(list_of_input[i]);
-	var groups = get_groups(list_of_input[i]);
-	var visibility = get_boolean(list_of_input[i]['invisible']);
-	var access_level = get_boolean(list_of_input[i]['see_all']);
-	var user = new User(fullname,
-		eid,
-		groups,
-		addresses,
-		visibility,
-		access_level);
-	list_of_users.push(user);
+function get_user(){
+	for (let i = 0; i < list_of_input.length; i++) {
+		var fullname = list_of_input[i]['fullname'];
+		var eid = list_of_input[i]['eid'];
+		var addresses = get_addresses(list_of_input[i]);
+		var groups = get_groups(list_of_input[i]);
+		var visibility = get_boolean(list_of_input[i]['invisible']);
+		var access_level = get_boolean(list_of_input[i]['see_all']);
+		var user = new User(fullname,
+			eid,
+			groups,
+			addresses,
+			visibility,
+			access_level);
+		list_of_users.push(user);
+	}
 }
 
-write_to_json();
+open_csv("input.csv");
+merge_eid();
+get_user();
+write_to_json("output.json");
+
+var list_of_users = [];
+var list_of_input = [];
+
+open_csv("input1.csv");
+merge_eid();
+get_user();
+write_to_json("output1.json");
