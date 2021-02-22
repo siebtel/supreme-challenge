@@ -3,6 +3,8 @@ const Papa = require('papaparse');
 const fs = require('fs');
 const ld = require('lodash');
 const { result } = require('lodash');
+const PNF = require('google-libphonenumber').PhoneNumberFormat;
+const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 
 //variables
 var list_of_users = []
@@ -94,7 +96,6 @@ function get_addresses(input){
 					address_list.push(temp_address_list[element].split(re));
 				};
 				address_list = [...new Set(address_list.flat())];
-				console.log(address_list);
 				for (const element in address_list){
 					if (is_email.test(address_list[element])){
 						address = objetify_address(possible_address[0], possible_address.slice(1), address_list[element]);
@@ -103,7 +104,29 @@ function get_addresses(input){
 				}
 			}
 		}else if(possible_address.length > 1 && possible_address[0] == 'phone'){
-
+			if(typeof input[property] == 'string' && input[property] != ""){
+				if(phoneUtil.isPossibleNumber(phoneUtil.parse(input[property], 'BR'))){
+					const number_temp = phoneUtil.parseAndKeepRawInput(input[property], 'BR');
+					var number = number_temp.getCountryCode() +""+ number_temp.getNationalNumber();
+					address = objetify_address(possible_address[0], possible_address.slice(1), number);
+					addresses.push(address);
+				}
+			}else if(typeof input[property] == 'object'){
+				var phone_list = input[property];
+				for (const element in phone_list){
+					try {
+						if(phoneUtil.isPossibleNumber(phoneUtil.parse(phone_list[element], 'BR'))){
+							const number_temp = phoneUtil.parseAndKeepRawInput(phone_list[element], 'BR');
+							var number = number_temp.getCountryCode() +""+ number_temp.getNationalNumber();
+							address = objetify_address(possible_address[0], possible_address.slice(1), number);
+							addresses.push(address);
+						}						
+					} catch (error) {
+						continue;
+					}
+	
+				}
+			}
 		}
 	}
 	return addresses;
