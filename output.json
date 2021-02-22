@@ -15,20 +15,21 @@
     "tags": [
      "Student"
     ],
-    "address": [
-     "john.appleseed@exemplo.com :(",
-     "john.appleseed1@exemplo.com"
-    ]
+    "address": "john.appleseed@exemplo.com"
+   },
+   {
+    "type": "email",
+    "tags": [
+     "Student"
+    ],
+    "address": "john.appleseed1@exemplo.com"
    },
    {
     "type": "phone",
     "tags": [
      "Student"
     ],
-    "address": [
-     "kkkkkkk",
-     "(11) 99990-1235"
-    ]
+    "address": "5511999901235"
    },
    {
     "type": "email",
@@ -36,10 +37,23 @@
      "Pedagogical",
      "Responsible"
     ],
-    "address": [
-     "dad.appleseed@exemplo.com",
-     "dad.appleseed1@exemplo.com/dad.appleseed2@exemplo.com"
-    ]
+    "address": "dad.appleseed@exemplo.com"
+   },
+   {
+    "type": "email",
+    "tags": [
+     "Pedagogical",
+     "Responsible"
+    ],
+    "address": "dad.appleseed1@exemplo.com"
+   },
+   {
+    "type": "email",
+    "tags": [
+     "Pedagogical",
+     "Responsible"
+    ],
+    "address": "dad.appleseed2@exemplo.com"
    },
    {
     "type": "phone",
@@ -47,10 +61,15 @@
      "Pedagogical",
      "Responsible"
     ],
-    "address": [
-     "(11) 99991-1234",
-     "(11) 99991-1235"
-    ]
+    "address": "5511999911234"
+   },
+   {
+    "type": "phone",
+    "tags": [
+     "Pedagogical",
+     "Responsible"
+    ],
+    "address": "5511999911235"
    },
    {
     "type": "email",
@@ -58,10 +77,7 @@
      "Financial",
      "Responsible"
     ],
-    "address": [
-     "mom.appleseed@exemplo.com",
-     ""
-    ]
+    "address": "mom.appleseed@exemplo.com"
    },
    {
     "type": "phone",
@@ -69,10 +85,7 @@
      "Financial",
      "Responsible"
     ],
-    "address": [
-     "(11) 99992-1234",
-     ""
-    ]
+    "address": "5511999921234"
    }
   ],
   "invisible": true,
@@ -99,7 +112,7 @@
     "tags": [
      "Student"
     ],
-    "address": "12 99990-1235"
+    "address": "5512999901235"
    },
    {
     "type": "email",
@@ -125,8 +138,7 @@
   "fullname": "Jack Littleton",
   "eid": "106",
   "groups": [
-   "Sala 1",
-   ""
+   "Sala 1"
   ],
   "addresses": [
    {
@@ -139,17 +151,10 @@
    {
     "type": "phone",
     "tags": [
-     "Student"
-    ],
-    "address": "(13) 99990"
-   },
-   {
-    "type": "phone",
-    "tags": [
      "Pedagogical",
      "Responsible"
     ],
-    "address": "(13) 99991-1236"
+    "address": "5513999911236"
    },
    {
     "type": "email",
@@ -165,7 +170,7 @@
      "Financial",
      "Responsible"
     ],
-    "address": "(13) 999921236"
+    "address": "5513999921236"
    }
   ],
   "invisible": false,
@@ -191,7 +196,7 @@
     "tags": [
      "Student"
     ],
-    "address": "14999901237"
+    "address": "5514999901237"
    },
    {
     "type": "email",
@@ -215,7 +220,7 @@
      "Financial",
      "Responsible"
     ],
-    "address": "(14) 99992-1237"
+    "address": "5514999921237"
    }
   ],
   "invisible": false,
